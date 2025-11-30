@@ -8,15 +8,70 @@
     <a-scene>
       <a-assets>
         <img id="sky1" src="assets/sky.jpg" alt="">
+        <img id="wood" src="assets/wood.jpg"alt ="">
         <a-asset-item id="boat" src="assets/Wooden_Rowboat.obj"></a-asset-item>
+         <a-asset-item id="monster" src="assets/SlenderMan_Model.obj"></a-asset-item>
       </a-assets>
     
 
 </a-scene>
   <body>
     <a-scene>
-      <a-obj-model src="#boat" position="-9.081 0 -10" scale="1 1 1" color="brown"></a-obj-model>
+      <a-obj-model src="#boat" position="-25 -20 -10" scale="12 12 12 " color="#7E481C"></a-obj-model>
+      <a-obj-model src="#boat" position="25 -20 10" scale="12 12 12 " color="#7E481C"></a-obj-model>
+      <a-obj-model src="#monster" position="-50 -40 -200" scale="2 2 2" color="#000000"></a-obj-model>
       <a-sky src="#sky1"></a-sky>
+       <a-entity id="stars"></a-entity>
+
+      <script>
+        AFRAME.registerComponent('starfield', {
+          schema: {
+            count: {type: 'int', default: 500}
+          },
+
+          init: function () {
+            const sceneEl = this.el;
+            const starCount = this.data.count;
+
+            for (let i = 0; i < starCount; i++) {
+              const star = document.createElement('a-sphere');
+
+              
+              const pos = {
+                x: (Math.random() - 0.5) * 300,
+                y: Math.random() * 150,
+                z: (Math.random() - 0.5) * 300
+              };
+
+              
+              const r = Math.random() * 0.3 + 0.10;
+
+              const duration = 2000 + Math.random() * 2000;
+
+              star.setAttribute('position', `${pos.x} ${pos.y} ${pos.z}`);
+              star.setAttribute('radius', r);
+              star.setAttribute('color', '#FFFFF0');
+              
+
+              
+              star.setAttribute('animation__twinkle', {
+                property: 'opacity',
+                dir: 'alternate',
+                dur: duration,
+                easing: 'easeInOutSine',
+                loop: true,
+                from: 0.2,
+                to: 1
+              });
+
+              sceneEl.appendChild(star);
+            }
+          }
+        });
+
+        
+        document.querySelector('#stars').setAttribute('starfield', '');
+      </script>
+
     </a-scene>
   </body>
-</html>
